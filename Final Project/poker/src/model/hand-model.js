@@ -1,0 +1,35 @@
+import Helpers from '../@shared/helpers';
+import { generateKeyPair } from 'crypto';
+import { CARD_DATA } from '../@shared/card-data';
+
+const combinations = [
+    "HighCard",
+    "Pair",
+    "TwoPair",
+    "ThreeOfAKind",
+    "Straight",
+    "Flush",
+    "FullHouse",
+    "FourOfAKind",
+    "StraightFlush",
+    "RoyalFlush"
+];
+
+export default class Hand {  
+
+    constructor(cards){
+        this.Cards = cards.map( a => CARD_DATA().find( b => b.Id == a));
+        this.Combinations = [];
+        this.BestCombination = null;
+    }
+
+    getAllCombinations() {
+        combinations.forEach( x => getCombinations(this.Cards, this.Combinations, x))
+        this.BestCombination = this.Combinations.slice(-1).pop();
+    }
+}
+
+function getCombinations(cards, collection, func){
+    let result = Helpers[`get${func}`](cards);   
+    if(result) collection.push(result)
+}
