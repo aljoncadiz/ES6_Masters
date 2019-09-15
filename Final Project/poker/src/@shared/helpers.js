@@ -1,12 +1,20 @@
 import {
-  VALUETYPE_SUITS,
-  VALUETYPE_FACE,
   SUIT_SPADES,
   SUIT_CLUBS,
   SUIT_HEARTS,
   SUIT_DIAMONDS,
   DESCENDING,
-  ASCENDING
+  ASCENDING,
+  COMBINATIONS_HIGHCARD,
+  COMBINATIONS_PAIR,
+  COMBINATIONS_TWOPAIR,
+  COMBINATIONS_THREEOFAKIND,
+  COMBINATIONS_STRAIGHT,
+  COMBINATIONS_FLUSH,
+  COMBINATIONS_FULLHOUSE,
+  COMBINATIONS_FOUROFAKIND,
+  COMBINATIONS_STRAIGHTFLUSH,
+  COMBINATIONS_ROYALFLUSH
 } from './constants'
 import HandType from '../model/hand-type-model';
 
@@ -19,12 +27,12 @@ const Helpers = {
 
     getHighCard(data){
       const cards = sortByRank(data);
-      return new HandType("High Card", cards[0]);
+      return new HandType("High Card", cards[0], COMBINATIONS_HIGHCARD);
     },
 
     getPair(data){
       let pairs = checkFaceRepetitions(data, 2);      
-      return (!!pairs && pairs.length > 0) ? new HandType("Pair", pairs): null;
+      return (!!pairs && pairs.length > 0) ? new HandType("Pair", pairs, COMBINATIONS_PAIR): null;
     },
 
     getTwoPair(data){
@@ -34,7 +42,7 @@ const Helpers = {
         const anotherPair = this.getPair(cards);
         if(!!anotherPair){
           const twoPair = [...pair.Value, ...anotherPair.Value];
-          return  new HandType("Two Pair", twoPair)
+          return  new HandType("Two Pair", twoPair, COMBINATIONS_TWOPAIR)
         } 
       }
       return null;
@@ -42,18 +50,18 @@ const Helpers = {
 
     getThreeOfAKind(data){
       let pairs = checkFaceRepetitions(data, 3);      
-      return (!!pairs && pairs.length > 0) ? new HandType("Three of a Kind", pairs): null;
+      return (!!pairs && pairs.length > 0) ? new HandType("Three of a Kind", pairs, COMBINATIONS_THREEOFAKIND): null;
     },
 
     getStraight(data){
       let cards = sortByValueThenRank(data, ASCENDING);
       let straight = getStraightCards(cards);
-      return (!!straight && straight.length > 0) ? new HandType("Straight", straight): null;
+      return (!!straight && straight.length > 0) ? new HandType("Straight", straight, COMBINATIONS_STRAIGHT): null;
     },
 
     getFlush(data){
       let flush = getFlushCards(data);
-      return (!!flush && flush.length >= 5) ? new HandType("Flush", flush.slice(0,5)): null;
+      return (!!flush && flush.length >= 5) ? new HandType("Flush", flush.slice(0,5), COMBINATIONS_FLUSH): null;
     },
     
     getFullHouse(data){
@@ -63,7 +71,7 @@ const Helpers = {
         const pair = this.getPair(cards);
         if(!!pair){
           const fullHouse = [...threeOfaKind.Value, ...pair.Value];
-          return  new HandType("Full House", fullHouse)
+          return  new HandType("Full House", fullHouse, COMBINATIONS_FULLHOUSE)
         }
       }
       return null;
@@ -74,7 +82,7 @@ const Helpers = {
       if(!!fourKind && fourKind.length > 0){
         let cards = getRemainingCards(fourKind, data);
         const fourOfAKind = [...fourKind, cards[0]];
-          return  new HandType("Four of a Kind", fourOfAKind)
+          return  new HandType("Four of a Kind", fourOfAKind, COMBINATIONS_FOUROFAKIND)
       }
       return null;
     },
@@ -86,7 +94,7 @@ const Helpers = {
         let straightFlush = this.getStraight(flush);
         if(!!straightFlush){
           if(straightFlush.Value[0].Face != 'Ace'){
-            return (!!straightFlush.Value && straightFlush.Value.length >= 5) ? new HandType("Straight Flush", straightFlush.Value): null;
+            return (!!straightFlush.Value && straightFlush.Value.length >= 5) ? new HandType("Straight Flush", straightFlush.Value, COMBINATIONS_STRAIGHTFLUSH): null;
           }
           return null;
         }
@@ -101,7 +109,7 @@ const Helpers = {
         let straightFlush = this.getStraight(flush);
         if(!!straightFlush){
           if(straightFlush.Value[0].Face === 'Ace' && straightFlush.Value[1].Face == 'King'){
-            return (!!straightFlush.Value && straightFlush.Value.length >= 5) ? new HandType("Royal Flush", straightFlush.Value): null;
+            return (!!straightFlush.Value && straightFlush.Value.length >= 5) ? new HandType("Royal Flush", straightFlush.Value, COMBINATIONS_ROYALFLUSH): null;
           }
           return null;
         }

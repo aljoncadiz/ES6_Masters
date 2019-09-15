@@ -30,8 +30,13 @@ const PokerController = {
         players.push( new Player(element))
     });
 
-    //pokerObj.process();
-    //return res.status(200).send(pokerObj.Hand.Combinations);
+    let topScore = Math.max(...players.map(o => o.HandValue), 0);
+    let result = players.map(x => ({ id: x.PlayerId, hand: x.Hand, handValue: x.HandValue }))
+    const resultObj = {
+        result: result,
+        winners: result.filter(x => x.handValue == topScore)
+    };
+    return res.status(200).send(resultObj);
   },
 }
 
