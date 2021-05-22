@@ -30,7 +30,11 @@ printResult = (rank, name, score) => {
 
 main = () => {
 	debugger;
+<<<<<<< HEAD
 	var test = 1;
+=======
+	var test = null;
+>>>>>>> f3af1a0b413940141e3ba02f539c6857702a2990
 	input.sort(compare);
 	var [top1 ,top2 ,top3] = rankElements(input);
 	!!top1 ? printResult("1st", top1.name, top1.score): null;
