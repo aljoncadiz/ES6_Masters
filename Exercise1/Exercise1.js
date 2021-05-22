@@ -22,6 +22,7 @@ processMyString = (type) => {
 };
 
 main = () => {
+	debugger;
 	return console.log(`
 		${processMyString("word")}
 		${processMyString("vowel")}
