@@ -30,7 +30,8 @@ processMyString = (type) => {
 };
 
 main = (...args) => { //rest operator
-	debugger;
+	debugger; 
+	var test = null;
 	for(let arg of args){ //For ..of
 		console.log(
 			processMyString(arg)
