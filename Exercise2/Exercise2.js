@@ -24,6 +24,7 @@ rankElements = (arr) => {
 };
 
 printResult = (rank, name, score) => {
+	var test = null;
 	console.log(`(${rank}) ${name} scored ${score} out of ${topScore}`);
 };
 
